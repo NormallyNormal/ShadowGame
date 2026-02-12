@@ -1,0 +1,107 @@
+[gd_scene format=3 uid="uid://b7kj6csa80pst"]
+
+[ext_resource type="Script" uid="uid://ite65het0kjj" path="res://scripts/projection/shadow_screen.gd" id="1_8rem4"]
+[ext_resource type="Shader" uid="uid://donvu0dhndgm7" path="res://assets/shaders/spatial/dithering_material.gdshader" id="2_6c5u0"]
+[ext_resource type="PackedScene" uid="uid://csvomjnpiuvh7" path="res://scenes/screen_contents.tscn" id="2_gi7kc"]
+[ext_resource type="Script" uid="uid://b4urnk2qjbqbb" path="res://scripts/test/spin.gd" id="3_kewym"]
+
+[sub_resource type="Environment" id="Environment_knoaa"]
+background_mode = 1
+ambient_light_source = 2
+ambient_light_color = Color(1, 1, 1, 1)
+ambient_light_energy = 0.01
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2so7o"]
+render_priority = 0
+shader = ExtResource("2_6c5u0")
+shader_parameter/screen_center_px = Vector2(640, 360)
+shader_parameter/inner_radius = 0.04
+shader_parameter/outer_radius = 0.12
+shader_parameter/albedo = Color(1, 0, 0, 1)
+shader_parameter/albedo_texture_size = Vector2i(0, 0)
+shader_parameter/point_size = 0.0
+shader_parameter/roughness = 0.0
+shader_parameter/metallic_texture_channel = Vector4(0, 0, 0, 0)
+shader_parameter/specular = 0.0
+shader_parameter/metallic = 0.0
+shader_parameter/uv1_scale = Vector3(0, 0, 0)
+shader_parameter/uv1_offset = Vector3(0, 0, 0)
+shader_parameter/uv2_scale = Vector3(0, 0, 0)
+shader_parameter/uv2_offset = Vector3(0, 0, 0)
+
+[sub_resource type="BoxMesh" id="BoxMesh_gi7kc"]
+size = Vector3(0.1, 0.1, 0.1)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_gi7kc"]
+viewport_path = NodePath("Screen/Emission Viewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_knoaa"]
+resource_local_to_scene = true
+emission_enabled = true
+emission_energy_multiplier = 0.1
+emission_texture = SubResource("ViewportTexture_gi7kc")
+
+[sub_resource type="QuadMesh" id="QuadMesh_8rem4"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_knoaa")
+
+[node name="Stage" type="Node3D" unique_id=97449347]
+
+[node name="World Environment" type="WorldEnvironment" parent="." unique_id=985454673]
+environment = SubResource("Environment_knoaa")
+
+[node name="Projecting Lights" type="Node3D" parent="." unique_id=684144272]
+
+[node name="Projecting Light" type="SpotLight3D" parent="Projecting Lights" unique_id=465919307]
+transform = Transform3D(0.8777757, 0.005848662, 0.47903615, -0.005610543, 0.9999824, -0.0019283745, -0.47903898, -0.0009949724, 0.87779313, 1.4811441, -0.008192986, 1.9498174)
+shadow_enabled = true
+shadow_normal_bias = 0.0
+shadow_blur = 1.6
+spot_range = 9.880213
+spot_angle = 12.2130785
+script = ExtResource("3_kewym")
+rate = 0.3
+
+[node name="Projecting Light2" type="SpotLight3D" parent="Projecting Lights" unique_id=863725015]
+transform = Transform3D(0.92283416, 0.004434921, -0.38517213, -0.005610542, 0.9999824, -0.001928375, 0.38515684, 0.0039405944, 0.9228428, -1.3853999, -0.008192986, 1.9498174)
+shadow_enabled = true
+shadow_normal_bias = 0.0
+shadow_blur = 1.6
+spot_range = 9.880213
+spot_angle = 12.2130785
+
+[node name="Projecting Objects" type="Node3D" parent="." unique_id=142777809]
+
+[node name="Cube" type="Node3D" parent="Projecting Objects" unique_id=2050744041]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.18825549, 0, 0.2000413)
+
+[node name="Projecting Mesh" type="MeshInstance3D" parent="Projecting Objects/Cube" unique_id=1702712484]
+material_override = SubResource("ShaderMaterial_2so7o")
+mesh = SubResource("BoxMesh_gi7kc")
+
+[node name="Cube2" type="Node3D" parent="Projecting Objects" unique_id=1705293859]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.29334888, -0.037133813, 0.2000413)
+script = ExtResource("3_kewym")
+rate = 5.0
+
+[node name="Projecting Mesh" type="MeshInstance3D" parent="Projecting Objects/Cube2" unique_id=280078911]
+material_override = SubResource("ShaderMaterial_2so7o")
+mesh = SubResource("BoxMesh_gi7kc")
+
+[node name="Main Camera" type="Camera3D" parent="." unique_id=1852016925]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.6943495)
+
+[node name="Screen" type="MeshInstance3D" parent="." unique_id=904086603 node_paths=PackedStringArray("projecting_lights", "projecting_meshes", "viewport", "screen_shapes", "player_pos")]
+mesh = SubResource("QuadMesh_8rem4")
+script = ExtResource("1_8rem4")
+projecting_lights = [NodePath("../Projecting Lights/Projecting Light"), NodePath("../Projecting Lights/Projecting Light2")]
+projecting_meshes = [NodePath("../Projecting Objects/Cube/Projecting Mesh"), NodePath("../Projecting Objects/Cube2/Projecting Mesh")]
+viewport = NodePath("Emission Viewport")
+screen_shapes = NodePath("Emission Viewport/Screen Contents/ProjectedShapes")
+player_pos = NodePath("Emission Viewport/Screen Contents/CharacterBody2D")
+
+[node name="Emission Viewport" type="SubViewport" parent="Screen" unique_id=1034842482]
+
+[node name="Screen Contents" parent="Screen/Emission Viewport" unique_id=699518531 instance=ExtResource("2_gi7kc")]
+
+[editable path="Screen/Emission Viewport/Screen Contents"]

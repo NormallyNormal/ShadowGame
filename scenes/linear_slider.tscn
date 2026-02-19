@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://clxva4axfu0t"]
+
+[ext_resource type="Script" uid="uid://db4vrja3yqr3v" path="res://scripts/3d_interacts/linear_slider.gd" id="1_g11gv"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_qidv5"]
+radius = 0.25
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_g11gv"]
+top_radius = 0.25
+bottom_radius = 0.25
+
+[node name="LinearSlider" type="StaticBody3D" unique_id=66519086]
+script = ExtResource("1_g11gv")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=302259208]
+shape = SubResource("CylinderShape3D_qidv5")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=983114751]
+cast_shadow = 0
+mesh = SubResource("CylinderMesh_g11gv")

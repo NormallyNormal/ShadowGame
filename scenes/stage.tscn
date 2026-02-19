@@ -1,9 +1,11 @@
 [gd_scene format=3 uid="uid://b7kj6csa80pst"]
 
 [ext_resource type="Script" uid="uid://ite65het0kjj" path="res://scripts/projection/shadow_screen.gd" id="1_8rem4"]
+[ext_resource type="PackedScene" uid="uid://yphsrlc1pjmh" path="res://scenes/rotation_slider.tscn" id="2_2so7o"]
 [ext_resource type="Shader" uid="uid://donvu0dhndgm7" path="res://assets/shaders/spatial/dithering_material.gdshader" id="2_6c5u0"]
 [ext_resource type="PackedScene" uid="uid://csvomjnpiuvh7" path="res://scenes/screen_contents.tscn" id="2_gi7kc"]
 [ext_resource type="Script" uid="uid://b4urnk2qjbqbb" path="res://scripts/test/spin.gd" id="3_kewym"]
+[ext_resource type="PackedScene" uid="uid://clxva4axfu0t" path="res://scenes/linear_slider.tscn" id="5_vcsse"]
 
 [sub_resource type="Environment" id="Environment_knoaa"]
 background_mode = 1
@@ -72,19 +74,24 @@ spot_angle = 12.2130785
 
 [node name="Projecting Objects" type="Node3D" parent="." unique_id=142777809]
 
-[node name="Cube" type="Node3D" parent="Projecting Objects" unique_id=2050744041]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.18825549, 0, 0.2000413)
+[node name="RotationSlider" parent="Projecting Objects" unique_id=66519086 instance=ExtResource("2_2so7o")]
+transform = Transform3D(0.00065884256, 0.049995657, 0, -0.049995657, 0.00065884256, 0, 0, 0, 0.05, -0.23095961, -0.09211611, 0.21393615)
 
-[node name="Projecting Mesh" type="MeshInstance3D" parent="Projecting Objects/Cube" unique_id=1702712484]
+[node name="Cube2" type="Node3D" parent="Projecting Objects/RotationSlider" unique_id=1705293859]
+transform = Transform3D(0.26353708, -19.998264, 0, 19.998264, 0.26353708, 0, 0, 0, 19.999994, 0.002216041, -1.1178427, 0)
+
+[node name="Projecting Mesh" type="MeshInstance3D" parent="Projecting Objects/RotationSlider/Cube2" unique_id=280078911]
 material_override = SubResource("ShaderMaterial_2so7o")
 mesh = SubResource("BoxMesh_gi7kc")
 
-[node name="Cube2" type="Node3D" parent="Projecting Objects" unique_id=1705293859]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.29334888, -0.037133813, 0.2000413)
-script = ExtResource("3_kewym")
-rate = 5.0
+[node name="LinearSlider" parent="Projecting Objects" unique_id=2051815982 instance=ExtResource("5_vcsse")]
+transform = Transform3D(0.05, 0, 0, 0, 0.049999997, 0, 0, 0, 0.05, 0.18464172, 0, 0.2517347)
+max_speed = 1.0
 
-[node name="Projecting Mesh" type="MeshInstance3D" parent="Projecting Objects/Cube2" unique_id=280078911]
+[node name="Cube" type="Node3D" parent="Projecting Objects/LinearSlider" unique_id=2050744041]
+transform = Transform3D(1.0698276, -0.15898973, -19.970734, 10.954598, 16.726954, 0.45366955, 16.69887, -10.962834, 0.9818311, 1.0362215, 0.016135454, 0.009591818)
+
+[node name="Projecting Mesh" type="MeshInstance3D" parent="Projecting Objects/LinearSlider/Cube" unique_id=1702712484]
 material_override = SubResource("ShaderMaterial_2so7o")
 mesh = SubResource("BoxMesh_gi7kc")
 
@@ -95,10 +102,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.6943495)
 mesh = SubResource("QuadMesh_8rem4")
 script = ExtResource("1_8rem4")
 projecting_lights = [NodePath("../Projecting Lights/Projecting Light"), NodePath("../Projecting Lights/Projecting Light2")]
-projecting_meshes = [NodePath("../Projecting Objects/Cube/Projecting Mesh"), NodePath("../Projecting Objects/Cube2/Projecting Mesh")]
+projecting_meshes = [NodePath("../Projecting Objects/LinearSlider/Cube/Projecting Mesh"), NodePath("../Projecting Objects/RotationSlider/Cube2/Projecting Mesh")]
 viewport = NodePath("Emission Viewport")
 screen_shapes = NodePath("Emission Viewport/Screen Contents/ProjectedShapes")
-player_pos = NodePath("Emission Viewport/Screen Contents/CharacterBody2D")
+player_pos = NodePath("Emission Viewport/Screen Contents/BirdPlayer")
 
 [node name="Emission Viewport" type="SubViewport" parent="Screen" unique_id=1034842482]
 

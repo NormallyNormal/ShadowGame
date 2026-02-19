@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://yphsrlc1pjmh"]
+
+[ext_resource type="Script" uid="uid://dm6r1dioa0ldn" path="res://scripts/3d_interacts/rotation_slider.gd" id="1_rlpb0"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_qidv5"]
+height = 0.4
+radius = 1.0
+
+[sub_resource type="TorusMesh" id="TorusMesh_6ukj7"]
+
+[node name="RotationSlider" type="StaticBody3D" unique_id=66519086]
+script = ExtResource("1_rlpb0")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=302259208]
+shape = SubResource("CylinderShape3D_qidv5")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=983114751]
+cast_shadow = 0
+mesh = SubResource("TorusMesh_6ukj7")

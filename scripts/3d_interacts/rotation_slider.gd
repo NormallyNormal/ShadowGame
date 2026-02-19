@@ -3,6 +3,7 @@ extends StaticBody3D
 var dragging := false
 var drag_start_angle := 0.0
 var drag_start_rotation := 0.0
+var mouse_in = false
 
 @export var max_rotation_speed := 5.0
 
@@ -22,12 +23,25 @@ func _on_input_event(_camera: Node, event: InputEvent, event_position: Vector3, 
 			dragging = true
 			drag_start_rotation = _current_rotation
 			drag_start_angle = _get_angle_from_mouse(event.position)
+			Input.set_default_cursor_shape(Input.CURSOR_DRAG)
 		else:
 			dragging = false
+
+func _on_mouse_exited():
+	mouse_in = false
+	if not dragging:
+		Input.set_default_cursor_shape(Input.CURSOR_ARROW)
+
+func _on_mouse_entered():
+	mouse_in = true
+	
+	Input.set_default_cursor_shape(Input.CURSOR_DRAG)
 
 func _unhandled_input(event: InputEvent):
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and not event.pressed:
 		dragging = false
+		if not mouse_in:
+			Input.set_default_cursor_shape(Input.CURSOR_ARROW)
 	if dragging and event is InputEventMouseMotion:
 		var current_angle = _get_angle_from_mouse(event.position)
 		var delta_angle = current_angle - drag_start_angle
@@ -60,3 +74,12 @@ func _get_angle_from_mouse(mouse_pos: Vector2) -> float:
 	var plane_x = (cam_right - axis_dir * cam_right.dot(axis_dir)).normalized()
 	var plane_y = axis_dir.cross(plane_x).normalized()
 	return atan2(offset.dot(plane_y), offset.dot(plane_x))
+
+func _mouse_intersects(mouse_pos: Vector2) -> float:
+	var camera = get_viewport().get_camera_3d()
+	var ray_origin = camera.project_ray_origin(mouse_pos)
+	var ray_dir = camera.project_ray_normal(mouse_pos)
+	var axis_dir = get_local_axis()
+	var axis_origin = global_position
+	var plane = Plane(axis_dir, axis_origin)
+	return plane.intersects_ray(ray_origin, ray_dir) != null

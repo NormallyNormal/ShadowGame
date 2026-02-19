@@ -17,3 +17,6 @@ shape = SubResource("CylinderShape3D_qidv5")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=983114751]
 cast_shadow = 0
 mesh = SubResource("TorusMesh_6ukj7")
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

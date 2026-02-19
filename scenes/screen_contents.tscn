@@ -1,8 +1,10 @@
 [gd_scene format=3 uid="uid://csvomjnpiuvh7"]
 
 [ext_resource type="Texture2D" uid="uid://dkfr8k7b8w5ap" path="res://assets/textures/effect/square_vignette.png" id="1_k3sy0"]
+[ext_resource type="Texture2D" uid="uid://cs7dpq1066ij7" path="res://assets/textures/environment/grass.png" id="2_0womu"]
 [ext_resource type="Script" uid="uid://7i1baayxc8v0" path="res://scripts/projection/projected_shapes.gd" id="2_im37o"]
 [ext_resource type="Script" uid="uid://dt1onntov2r28" path="res://scripts/player.gd" id="3_ahgot"]
+[ext_resource type="Texture2D" uid="uid://d1fvr6dqfn6jw" path="res://assets/textures/environment/tree.png" id="3_g7lbm"]
 [ext_resource type="Texture2D" uid="uid://di3yaw7sh8xrr" path="res://assets/textures/placeholder/player/head.png" id="4_3t33q"]
 [ext_resource type="Script" uid="uid://j7cichrawkoh" path="res://scripts/player/bird_legs.gd" id="5_4rlu6"]
 [ext_resource type="Texture2D" uid="uid://bgmcs0a4nwudm" path="res://assets/textures/placeholder/player/eye.png" id="6_4rlu6"]
@@ -11,8 +13,9 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ic3y7"]
 size = Vector2(633, 246)
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_3t33q"]
-radius = 2.0
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_g7lbm"]
+radius = 3.0
+height = 28.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_4rlu6"]
 radius = 17.029387
@@ -26,18 +29,38 @@ offset_bottom = 512.0
 [node name="ProjectedShapes" type="Node2D" parent="." unique_id=1847244542]
 script = ExtResource("2_im37o")
 
-[node name="ColorRect" type="ColorRect" parent="." unique_id=735605624]
+[node name="Environment" type="Node2D" parent="." unique_id=1424127680]
+
+[node name="ColorRect" type="ColorRect" parent="Environment" unique_id=735605624]
 offset_left = -43.0
 offset_top = 329.0
 offset_right = 588.0
 offset_bottom = 575.0
 color = Color(0, 0, 0, 1)
 
-[node name="StaticBody2D" type="StaticBody2D" parent="ColorRect" unique_id=1312958269]
+[node name="StaticBody2D" type="StaticBody2D" parent="Environment/ColorRect" unique_id=1312958269]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="ColorRect/StaticBody2D" unique_id=1156898057]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Environment/ColorRect/StaticBody2D" unique_id=1156898057]
 position = Vector2(315.5, 123)
 shape = SubResource("RectangleShape2D_ic3y7")
+
+[node name="Decal" type="Node2D" parent="Environment" unique_id=85463511]
+
+[node name="Sprite2D" type="Sprite2D" parent="Environment/Decal" unique_id=554881736]
+position = Vector2(159, 324)
+scale = Vector2(0.2, 0.1)
+texture = ExtResource("2_0womu")
+
+[node name="Sprite2D2" type="Sprite2D" parent="Environment/Decal" unique_id=1335614676]
+position = Vector2(499, 324)
+scale = Vector2(0.2, 0.1)
+texture = ExtResource("2_0womu")
+
+[node name="Sprite2D3" type="Sprite2D" parent="Environment/Decal" unique_id=1687153837]
+modulate = Color(0, 0, 0, 0.627451)
+position = Vector2(420.00003, 168)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("3_g7lbm")
 
 [node name="BirdPlayer" type="CharacterBody2D" parent="." unique_id=1935834047 node_paths=PackedStringArray("beak", "eye", "iris")]
 position = Vector2(138, 106)
@@ -48,15 +71,12 @@ iris = NodePath("Body/Head/Eye/Iris")
 
 [node name="Body" type="Node2D" parent="BirdPlayer" unique_id=1868199756]
 
-[node name="Legs" type="Node2D" parent="BirdPlayer/Body" unique_id=1178506200 node_paths=PackedStringArray("line_left", "line_right", "collider_left", "collider_right", "head_slip")]
+[node name="Legs" type="Node2D" parent="BirdPlayer/Body" unique_id=1178506200 node_paths=PackedStringArray("line_left", "line_right")]
 position = Vector2(0, 12)
 scale = Vector2(0.04625, 0.04625)
 script = ExtResource("5_4rlu6")
 line_left = NodePath("LeftLeg")
 line_right = NodePath("RightLeg")
-collider_left = NodePath("../../LeftFootCol")
-collider_right = NodePath("../../RightFootCol")
-head_slip = NodePath("../../HeadSlip")
 
 [node name="LeftLeg" type="Line2D" parent="BirdPlayer/Body/Legs" unique_id=1095933473]
 position = Vector2(-100, 0)
@@ -99,19 +119,15 @@ rotation = 1.7959439
 scale = Vector2(0.0925, 0.0925)
 texture = ExtResource("7_gytys")
 
-[node name="LeftFootCol" type="CollisionShape2D" parent="BirdPlayer" unique_id=1765431958]
-position = Vector2(0, 14)
-shape = SubResource("CircleShape2D_3t33q")
-
-[node name="RightFootCol" type="CollisionShape2D" parent="BirdPlayer" unique_id=1322261218]
-position = Vector2(0, 14)
-shape = SubResource("CircleShape2D_3t33q")
+[node name="FootCol" type="CollisionShape2D" parent="BirdPlayer" unique_id=1765431958]
+position = Vector2(0, 29)
+shape = SubResource("CapsuleShape2D_g7lbm")
 
 [node name="HeadCol" type="CollisionShape2D" parent="BirdPlayer" unique_id=1738104831]
 shape = SubResource("CircleShape2D_4rlu6")
 
 [node name="HeadSlip" type="CollisionPolygon2D" parent="BirdPlayer" unique_id=73192272]
-position = Vector2(0, -7.6293945e-06)
+position = Vector2(0, 30)
 polygon = PackedVector2Array(-12, -18, 0, 0, 12, -18)
 
 [node name="Vignette" type="Sprite2D" parent="." unique_id=162752530]

@@ -14,9 +14,6 @@ extends Node2D
 
 @export var line_left: Line2D
 @export var line_right: Line2D
-@export var collider_left: CollisionShape2D
-@export var collider_right: CollisionShape2D
-@export var head_slip: CollisionPolygon2D
 
 var in_jump
 
@@ -34,7 +31,6 @@ var _right_bend: float = 1.0
 
 var _initialized: bool = false
 
-var _time_since_airborne = 0.0
 var _on_floor = false
 
 func _physics_process(delta: float) -> void:
@@ -53,8 +49,6 @@ func _physics_process(delta: float) -> void:
 		even_x = grid_index_ceil * grid_snap
 	var ray_start_left = Vector2(even_x, pos.y + y_offset)
 	var ray_start_right = Vector2(odd_x, pos.y + y_offset)
-	var col_hit_left = ray_start_left + Vector2(0, ray_length)
-	var col_hit_right = ray_start_right + Vector2(0, ray_length)
 	var vis_hit_left = cast_ray(ray_start_left, ray_start_left + Vector2(0, ray_length + ray_extension))
 	var vis_hit_right = cast_ray(ray_start_right, ray_start_right + Vector2(0, ray_length + ray_extension))
 #
@@ -71,13 +65,6 @@ func _physics_process(delta: float) -> void:
 		if vis_hit_right == Vector2.INF:
 			vis_hit_right = ray_start_right + Vector2(0, ray_length + ray_extension)
 
-	head_slip.position.y = ray_length + 12
-	if collider_left:
-		var col_target_left = col_hit_left
-		collider_left.global_position = collider_left.global_position.lerp(col_target_left, 1.0 - exp(-30.0 * delta))
-	if collider_right:
-		var col_target_right = col_hit_right
-		collider_right.global_position = collider_right.global_position.lerp(col_target_right, 1.0 - exp(-30.0 * delta))
 	if not _initialized:
 		_left_from = vis_hit_left
 		_left_to = vis_hit_left
@@ -85,8 +72,6 @@ func _physics_process(delta: float) -> void:
 		_right_from = vis_hit_right
 		_right_to = vis_hit_right
 		_right_current = vis_hit_right
-		_left_bend = float(bend_direction)
-		_right_bend = float(bend_direction)
 		_initialized = true
 
 	if !_on_floor:
@@ -143,18 +128,11 @@ func _physics_process(delta: float) -> void:
 			_right_to = vis_hit_right
 			_right_t = 1.0
 	if line_left:
-		var desired_left = _desired_bend(line_left, _left_current)
-		_left_bend = lerp(_left_bend, desired_left, 1.0 - exp(-bend_speed * delta))
+		_left_bend = lerp(_left_bend, float(bend_direction), 1.0 - exp(-bend_speed * delta))
 		solve_ik(line_left, _left_current, _left_bend, not airborne)
 	if line_right:
-		var desired_right = _desired_bend(line_right, _right_current)
-		_right_bend = lerp(_right_bend, desired_right, 1.0 - exp(-bend_speed * delta))
+		_right_bend = lerp(_right_bend, float(bend_direction), 1.0 - exp(-bend_speed * delta))
 		solve_ik(line_right, _right_current, _right_bend, not airborne)
-
-
-func _desired_bend(line: Line2D, target: Vector2) -> float:
-	return float(bend_direction)
-
 
 func _arc_lerp(from: Vector2, to: Vector2, t: float) -> Vector2:
 	var smooth_t = t * t * (3.0 - 2.0 * t)

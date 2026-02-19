@@ -4,7 +4,9 @@ var dragging := false
 var drag_start_t := 0.0
 var drag_start_position := Vector3.ZERO
 
-@export var max_speed := 5.0  # units per second
+var mouse_in = false
+
+@export var max_speed := 5.0
 
 var target_position := Vector3.ZERO
 
@@ -18,13 +20,24 @@ func _on_input_event(_camera: Node, event: InputEvent, event_position: Vector3, 
 			dragging = true
 			drag_start_position = global_position
 			drag_start_t = _get_axis_parameter_from_mouse(event.position, drag_start_position)
+			Input.set_default_cursor_shape(Input.CURSOR_DRAG)
 		else:
 			dragging = false
+
+func _on_mouse_exited():
+	mouse_in = false
+	if not dragging:
+		Input.set_default_cursor_shape(Input.CURSOR_ARROW)
+
+func _on_mouse_entered():
+	mouse_in = true
+	Input.set_default_cursor_shape(Input.CURSOR_DRAG)
 
 func _unhandled_input(event: InputEvent):
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and not event.pressed:
 		dragging = false
-
+		if not mouse_in:
+			Input.set_default_cursor_shape(Input.CURSOR_ARROW)
 	if dragging and event is InputEventMouseMotion:
 		var current_t = _get_axis_parameter_from_mouse(event.position, drag_start_position)
 		var delta_t = current_t - drag_start_t

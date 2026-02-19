@@ -63,9 +63,11 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_pressed("move_up") and coyote_timer > 0.0:
 		holding_jump = true
 		jump_hold_timer += delta
-		legs.ray_length = 10.0
+		$FootCol.position.y = 10
+		$HeadSlip.disabled = true
 	else:
-		legs.ray_length = 20.0
+		$FootCol.position.y = 20
+		$HeadSlip.disabled = false
 
 	if Input.is_action_just_released("move_up"):
 		if holding_jump and coyote_timer > 0.0:

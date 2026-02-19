@@ -10,8 +10,7 @@
 [sub_resource type="Environment" id="Environment_knoaa"]
 background_mode = 1
 ambient_light_source = 2
-ambient_light_color = Color(1, 1, 1, 1)
-ambient_light_energy = 0.01
+ambient_light_color = Color(0.06879827, 0.06879828, 0.06879828, 1)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_2so7o"]
 render_priority = 0
@@ -56,6 +55,7 @@ environment = SubResource("Environment_knoaa")
 
 [node name="Projecting Light" type="SpotLight3D" parent="Projecting Lights" unique_id=465919307]
 transform = Transform3D(0.8777757, 0.005848662, 0.47903615, -0.005610543, 0.9999824, -0.0019283745, -0.47903898, -0.0009949724, 0.87779313, 1.4811441, -0.008192986, 1.9498174)
+light_energy = 0.5
 shadow_enabled = true
 shadow_normal_bias = 0.0
 shadow_blur = 1.6
@@ -66,6 +66,7 @@ rate = 0.3
 
 [node name="Projecting Light2" type="SpotLight3D" parent="Projecting Lights" unique_id=863725015]
 transform = Transform3D(0.92283416, 0.004434921, -0.38517213, -0.005610542, 0.9999824, -0.001928375, 0.38515684, 0.0039405944, 0.9228428, -1.3853999, -0.008192986, 1.9498174)
+light_energy = 0.5
 shadow_enabled = true
 shadow_normal_bias = 0.0
 shadow_blur = 1.6

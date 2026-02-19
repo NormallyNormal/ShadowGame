@@ -34,6 +34,9 @@ var _right_bend: float = 1.0
 
 var _initialized: bool = false
 
+var _time_since_airborne = 0.0
+var _on_floor = false
+
 func _physics_process(delta: float) -> void:
 	var pos = global_position
 	var grid_index_floor = int(floor(pos.x / grid_snap))
@@ -50,18 +53,13 @@ func _physics_process(delta: float) -> void:
 		even_x = grid_index_ceil * grid_snap
 	var ray_start_left = Vector2(even_x, pos.y + y_offset)
 	var ray_start_right = Vector2(odd_x, pos.y + y_offset)
-	var col_hit_left = cast_ray(ray_start_left, ray_start_left + Vector2(0, ray_length))
-	var col_hit_right = cast_ray(ray_start_right, ray_start_right + Vector2(0, ray_length))
+	var col_hit_left = ray_start_left + Vector2(0, ray_length)
+	var col_hit_right = ray_start_right + Vector2(0, ray_length)
 	var vis_hit_left = cast_ray(ray_start_left, ray_start_left + Vector2(0, ray_length + ray_extension))
 	var vis_hit_right = cast_ray(ray_start_right, ray_start_right + Vector2(0, ray_length + ray_extension))
-
+#
 	var no_ground = vis_hit_left == Vector2.INF and vis_hit_right == Vector2.INF
-	var airborne = in_jump or no_ground
-
-	if col_hit_left == Vector2.INF:
-		col_hit_left = ray_start_left + Vector2(0, ray_length)
-	if col_hit_right == Vector2.INF:
-		col_hit_right = ray_start_right + Vector2(0, ray_length)
+	var airborne = !_on_floor && no_ground
 
 	if airborne:
 		var dangle_dist = segment_length * 2.0 - 5.0
@@ -76,10 +74,10 @@ func _physics_process(delta: float) -> void:
 	head_slip.position.y = ray_length + 12
 	if collider_left:
 		var col_target_left = col_hit_left
-		collider_left.global_position = collider_left.global_position.lerp(col_target_left, 1.0 - exp(-10.0 * delta))
+		collider_left.global_position = collider_left.global_position.lerp(col_target_left, 1.0 - exp(-30.0 * delta))
 	if collider_right:
 		var col_target_right = col_hit_right
-		collider_right.global_position = collider_right.global_position.lerp(col_target_right, 1.0 - exp(-10.0 * delta))
+		collider_right.global_position = collider_right.global_position.lerp(col_target_right, 1.0 - exp(-30.0 * delta))
 	if not _initialized:
 		_left_from = vis_hit_left
 		_left_to = vis_hit_left
@@ -91,9 +89,9 @@ func _physics_process(delta: float) -> void:
 		_right_bend = float(bend_direction)
 		_initialized = true
 
-	if airborne:
-		_left_current = _left_current.lerp(vis_hit_left, 1.0 - exp(-20.0 * delta))
-		_right_current = _right_current.lerp(vis_hit_right, 1.0 - exp(-20.0 * delta))
+	if !_on_floor:
+		_left_current = _left_current.lerp(vis_hit_left, 1.0 - exp(-30.0 * delta))
+		_right_current = _right_current.lerp(vis_hit_right, 1.0 - exp(-30.0 * delta))
 		_left_to = vis_hit_left
 		_left_from = _left_current
 		_left_t = 1.0

@@ -47,7 +47,7 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	var on_floor = is_on_floor()
-
+	legs._on_floor = on_floor
 	if on_floor:
 		coyote_timer = coyote_time
 	else:

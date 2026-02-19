@@ -30,7 +30,7 @@ func _unhandled_input(event: InputEvent):
 		var delta_t = current_t - drag_start_t
 		target_position = drag_start_position + get_local_axis() * delta_t
 
-func _process(delta: float):
+func _physics_process(delta: float) -> void:
 	var diff = target_position - global_position
 	var dist = diff.length()
 	if dist < 0.001:

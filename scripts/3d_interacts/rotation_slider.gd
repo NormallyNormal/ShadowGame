@@ -33,7 +33,7 @@ func _unhandled_input(event: InputEvent):
 		var delta_angle = current_angle - drag_start_angle
 		_target_rotation = drag_start_rotation + delta_angle
 
-func _process(delta: float):
+func _physics_process(delta: float) -> void:
 	if not dragging:
 		return
 	var diff = _target_rotation - _current_rotation

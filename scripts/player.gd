@@ -3,7 +3,8 @@ extends CharacterBody2D
 @export var speed := 100.0
 @export var jump_velocity := -400
 @export var min_jump_velocity := -150.0
-@export var gravity := 1200.0
+@export var rise_gravity := 1000.0
+@export var fall_gravity := 1400.0
 @export var coyote_time := 0.15
 @export var ground_accel := 800.0
 @export var ground_decel := 1200.0
@@ -54,7 +55,10 @@ func _physics_process(delta: float) -> void:
 		coyote_timer -= delta
 
 	if not on_floor:
-		velocity.y += gravity * delta
+		if velocity.y < 0.0:
+			velocity.y += rise_gravity * delta
+		else:
+			velocity.y += fall_gravity * delta
 
 	if Input.is_action_pressed("move_up") and coyote_timer > 0.0:
 		holding_jump = true
@@ -95,8 +99,6 @@ func _physics_process(delta: float) -> void:
 			bob_timer += delta * bob_speed
 			var bob_y = abs(sin(bob_timer)) * bob_amount
 			head.position = head_origin + Vector2(0, -bob_y)
-		else:
-			bob_timer = 0.0
 
 	var target_sign := 1.0 if facing_right else -1.0
 	var lerp_speed := 10.0 * delta

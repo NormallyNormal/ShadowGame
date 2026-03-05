@@ -2,7 +2,7 @@ extends MeshInstance3D
 
 var projecting_lights : Array[SpotLight3D]
 var projecting_meshes : Array[MeshInstance3D]
-@export var dithering_meshes : Array[MeshInstance3D]
+var dithering_meshes : Array[MeshInstance3D]
 @export var viewport : SubViewport
 @export var screen_shapes : Node2D
 @export var screen_colors : Node2D

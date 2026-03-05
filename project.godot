@@ -25,10 +25,6 @@ Colors="*uid://b4t2h4c4a8t6d"
 movie_writer/ogv/encoding_speed=2
 movie_writer/movie_file="/home/finn/Downloads/movie.avi"
 
-[global_group]
-
-playerbody=""
-
 [input]
 
 move_up={

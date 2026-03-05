@@ -109,11 +109,10 @@ script = ExtResource("4_st0q7")
 [node name="Main Camera" type="Camera3D" parent="." unique_id=1852016925]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.6943495)
 
-[node name="Screen" type="MeshInstance3D" parent="." unique_id=904086603 node_paths=PackedStringArray("dithering_meshes", "viewport", "screen_shapes", "screen_colors", "player_pos")]
+[node name="Screen" type="MeshInstance3D" parent="." unique_id=904086603 node_paths=PackedStringArray("viewport", "screen_shapes", "screen_colors", "player_pos")]
 unique_name_in_owner = true
 mesh = SubResource("QuadMesh_8rem4")
 script = ExtResource("1_8rem4")
-dithering_meshes = [NodePath("../Level/Projecting Objects/RotationSlider/Cube2/Projecting Mesh"), NodePath("../Level/Projecting Objects/LinearSlider/Cube/Projecting Mesh")]
 viewport = NodePath("Emission Viewport")
 screen_shapes = NodePath("Emission Viewport/Screen Contents/ProjectedShapes")
 screen_colors = NodePath("Emission Viewport/Screen Contents/ProjectedColors")

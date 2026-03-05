@@ -5,7 +5,7 @@ var dragging := false
 var drag_start_angle := 0.0
 var drag_start_rotation := 0.0
 var mouse_in = false
-@export var max_rotation_speed := 5.0
+@export var max_rotation_speed := 10.0
 @export var color: Colors.ColorID = Colors.ColorID.WHITE:
 	set(value):
 		color = value

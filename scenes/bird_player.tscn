@@ -1,0 +1,81 @@
+[gd_scene format=3 uid="uid://dcdgg2svsu18n"]
+
+[ext_resource type="Script" uid="uid://dt1onntov2r28" path="res://scripts/player.gd" id="1_ob8vu"]
+[ext_resource type="Script" uid="uid://j7cichrawkoh" path="res://scripts/player/bird_legs.gd" id="2_lqjjy"]
+[ext_resource type="Texture2D" uid="uid://di3yaw7sh8xrr" path="res://assets/textures/placeholder/player/head.png" id="3_rviiw"]
+[ext_resource type="Texture2D" uid="uid://bgmcs0a4nwudm" path="res://assets/textures/placeholder/player/eye.png" id="4_4twfo"]
+[ext_resource type="Texture2D" uid="uid://cjsy5dgj4qo4" path="res://assets/textures/placeholder/player/beak.png" id="5_cuylc"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_g7lbm"]
+radius = 3.0
+height = 28.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_4rlu6"]
+radius = 17.029387
+
+[node name="BirdPlayer" type="CharacterBody2D" unique_id=1226759058 node_paths=PackedStringArray("beak", "eye", "iris") groups=["playerbody"]]
+script = ExtResource("1_ob8vu")
+beak = NodePath("Body/Head/Node2D")
+eye = NodePath("Body/Head/Eye")
+iris = NodePath("Body/Head/Eye/Iris")
+
+[node name="Body" type="Node2D" parent="." unique_id=865054825]
+
+[node name="Legs" type="Node2D" parent="Body" unique_id=425490096 node_paths=PackedStringArray("line_left", "line_right")]
+position = Vector2(0, 12)
+scale = Vector2(0.04625, 0.04625)
+script = ExtResource("2_lqjjy")
+line_left = NodePath("LeftLeg")
+line_right = NodePath("RightLeg")
+
+[node name="LeftLeg" type="Line2D" parent="Body/Legs" unique_id=1938993520]
+position = Vector2(-100, 0)
+points = PackedVector2Array(0, 0, 0, 0, 0, 0)
+width = 120.0
+default_color = Color(0, 0, 0, 1)
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="RightLeg" type="Line2D" parent="Body/Legs" unique_id=178286787]
+position = Vector2(100, 0)
+points = PackedVector2Array(0, 0, 0, 0, 0, 0)
+width = 120.0
+default_color = Color(0, 0, 0, 1)
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="Head" type="Sprite2D" parent="Body" unique_id=23057719]
+scale = Vector2(0.04625, 0.04625)
+texture = ExtResource("3_rviiw")
+
+[node name="Eye" type="Sprite2D" parent="Body/Head" unique_id=677719776]
+position = Vector2(108.10819, -21.621674)
+scale = Vector2(0.32432455, 0.3243247)
+texture = ExtResource("4_4twfo")
+
+[node name="Iris" type="Sprite2D" parent="Body/Head/Eye" unique_id=1471174907]
+position = Vector2(66.66662, 0)
+scale = Vector2(0.66666746, 0.66666627)
+texture = ExtResource("3_rviiw")
+
+[node name="Node2D" type="Node2D" parent="Body/Head" unique_id=322214017]
+scale = Vector2(21.621622, 21.621622)
+
+[node name="Beak" type="Sprite2D" parent="Body/Head/Node2D" unique_id=204413912]
+position = Vector2(20, 5)
+rotation = 1.7959439
+scale = Vector2(0.0925, 0.0925)
+texture = ExtResource("5_cuylc")
+
+[node name="FootCol" type="CollisionShape2D" parent="." unique_id=537496188]
+position = Vector2(0, 29)
+shape = SubResource("CapsuleShape2D_g7lbm")
+
+[node name="HeadCol" type="CollisionShape2D" parent="." unique_id=452886874]
+shape = SubResource("CircleShape2D_4rlu6")
+
+[node name="HeadSlip" type="CollisionPolygon2D" parent="." unique_id=1783884928]
+position = Vector2(0, 30)
+polygon = PackedVector2Array(-15, -21, 0, 4, 15, -21)

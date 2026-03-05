@@ -88,6 +88,13 @@ func clip_to_spotlight_ellipse(
 	
 	return _clip_polygon_to_polygon(points, ellipse_points)
 
+func get_spotlight_ellipse(projection_origin: SpotLight3D, plane_transform: Transform3D) -> Array[Vector2]:
+	return _compute_spotlight_ellipse(
+		projection_origin,
+		plane_transform,
+		32
+	)
+
 func _clip_polygon_to_polygon(
 	subject: Array[Vector2],
 	clip: Array[Vector2]

@@ -1,9 +1,29 @@
 [gd_scene format=3 uid="uid://clxva4axfu0t"]
 
 [ext_resource type="Script" uid="uid://db4vrja3yqr3v" path="res://scripts/3d_interacts/linear_slider.gd" id="1_g11gv"]
+[ext_resource type="Shader" uid="uid://donvu0dhndgm7" path="res://assets/shaders/spatial/dithering_material.gdshader" id="2_wlc1d"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_qidv5"]
 radius = 0.25
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_k88wa"]
+render_priority = 0
+shader = ExtResource("2_wlc1d")
+shader_parameter/screen_center_px = Vector2(640, 360)
+shader_parameter/inner_radius = 0.04
+shader_parameter/outer_radius = 0.12
+shader_parameter/albedo = Color(1, 1, 1, 1)
+shader_parameter/emission = Color(0, 1, 0, 1)
+shader_parameter/albedo_texture_size = Vector2i(0, 0)
+shader_parameter/point_size = 0.0
+shader_parameter/roughness = 0.0
+shader_parameter/metallic_texture_channel = Vector4(0, 0, 0, 0)
+shader_parameter/specular = 0.0
+shader_parameter/metallic = 0.0
+shader_parameter/uv1_scale = Vector3(0, 0, 0)
+shader_parameter/uv1_offset = Vector3(0, 0, 0)
+shader_parameter/uv2_scale = Vector3(0, 0, 0)
+shader_parameter/uv2_offset = Vector3(0, 0, 0)
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_g11gv"]
 top_radius = 0.25
@@ -16,6 +36,7 @@ script = ExtResource("1_g11gv")
 shape = SubResource("CylinderShape3D_qidv5")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=983114751]
+material_override = SubResource("ShaderMaterial_k88wa")
 cast_shadow = 0
 mesh = SubResource("CylinderMesh_g11gv")
 

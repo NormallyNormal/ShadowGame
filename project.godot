@@ -18,11 +18,16 @@ config/icon="res://icon.svg"
 [autoload]
 
 ProjectionMath="*uid://ckcykg14m10tx"
+Colors="*uid://b4t2h4c4a8t6d"
 
 [editor]
 
 movie_writer/ogv/encoding_speed=2
 movie_writer/movie_file="/home/finn/Downloads/movie.avi"
+
+[global_group]
+
+playerbody=""
 
 [input]
 

@@ -1,22 +1,32 @@
+@tool
 extends StaticBody3D
 
 var dragging := false
 var drag_start_t := 0.0
 var drag_start_position := Vector3.ZERO
-
 var mouse_in = false
-
 @export var max_speed := 5.0
+@export var color: Colors.ColorID = Colors.ColorID.WHITE:
+	set(value):
+		color = value
+		if is_node_ready():
+			$MeshInstance3D.material_override.set_shader_parameter("emission", Colors.COLOR_VALUES_MAX[color])
 
 var target_position := Vector3.ZERO
 
 func _ready():
+	if Engine.is_editor_hint():
+		$MeshInstance3D.material_override.set_shader_parameter("emission", Colors.COLOR_VALUES_MAX[color])
+		return
+	$MeshInstance3D.material_override.set_shader_parameter("emission", Colors.get_color(color))
 	input_event.connect(_on_input_event)
 	target_position = global_position
 
 func _on_input_event(_camera: Node, event: InputEvent, event_position: Vector3, _normal: Vector3, _shape_idx: int):
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.pressed:
+			if not Colors.is_enabled(color):
+				return
 			dragging = true
 			drag_start_position = global_position
 			drag_start_t = _get_axis_parameter_from_mouse(event.position, drag_start_position)
@@ -30,6 +40,8 @@ func _on_mouse_exited():
 		Input.set_default_cursor_shape(Input.CURSOR_ARROW)
 
 func _on_mouse_entered():
+	if not Colors.is_enabled(color):
+		return
 	mouse_in = true
 	Input.set_default_cursor_shape(Input.CURSOR_DRAG)
 
@@ -44,6 +56,12 @@ func _unhandled_input(event: InputEvent):
 		target_position = drag_start_position + get_local_axis() * delta_t
 
 func _physics_process(delta: float) -> void:
+	if Engine.is_editor_hint():
+		return
+	$MeshInstance3D.material_override.set_shader_parameter("emission", Colors.get_color(color))
+	if not Colors.is_enabled(color):
+		dragging = false
+		return
 	var diff = target_position - global_position
 	var dist = diff.length()
 	if dist < 0.001:

@@ -1,0 +1,120 @@
+[gd_scene format=3 uid="uid://di2pbi3rrk6or"]
+
+[ext_resource type="Script" uid="uid://cg07fu12le0jo" path="res://scripts/3d_interacts/projecting_light.gd" id="1_4p75b"]
+[ext_resource type="Shader" uid="uid://donvu0dhndgm7" path="res://assets/shaders/spatial/dithering_material.gdshader" id="3_astit"]
+[ext_resource type="Script" uid="uid://c41cvd4by60bm" path="res://scripts/3d_interacts/projecting_mesh.gd" id="4_o5wbv"]
+[ext_resource type="PackedScene" uid="uid://clxva4axfu0t" path="res://scenes/linear_slider.tscn" id="5_s6ikc"]
+[ext_resource type="Script" uid="uid://ite65het0kjj" path="res://scripts/projection/shadow_screen.gd" id="6_036lt"]
+[ext_resource type="PackedScene" uid="uid://dkk4vpffkpar4" path="res://scenes/levels/screen_lvl_1.tscn" id="7_w53h0"]
+
+[sub_resource type="Environment" id="Environment_knoaa"]
+background_mode = 1
+ambient_light_source = 2
+ambient_light_color = Color(0.06879827, 0.06879828, 0.06879828, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2so7o"]
+render_priority = 0
+shader = ExtResource("3_astit")
+shader_parameter/screen_center_px = Vector2(640, 360)
+shader_parameter/inner_radius = 0.04
+shader_parameter/outer_radius = 0.12
+shader_parameter/albedo = Color(1, 0, 0, 1)
+shader_parameter/emission = Color(0, 0, 0, 1)
+shader_parameter/albedo_texture_size = Vector2i(0, 0)
+shader_parameter/point_size = 0.0
+shader_parameter/roughness = 0.0
+shader_parameter/metallic_texture_channel = Vector4(0, 0, 0, 0)
+shader_parameter/specular = 0.0
+shader_parameter/metallic = 0.0
+shader_parameter/uv1_scale = Vector3(0, 0, 0)
+shader_parameter/uv1_offset = Vector3(0, 0, 0)
+shader_parameter/uv2_scale = Vector3(0, 0, 0)
+shader_parameter/uv2_offset = Vector3(0, 0, 0)
+
+[sub_resource type="BoxMesh" id="BoxMesh_gi7kc"]
+size = Vector3(0.1, 0.1, 0.1)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_gi7kc"]
+viewport_path = NodePath("Screen/Emission Viewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_knoaa"]
+resource_local_to_scene = true
+emission_enabled = true
+emission_energy_multiplier = 0.1
+emission_texture = SubResource("ViewportTexture_gi7kc")
+
+[sub_resource type="QuadMesh" id="QuadMesh_8rem4"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_knoaa")
+size = Vector2(1.5, 1)
+
+[node name="Stage" type="Node3D" unique_id=97449347]
+
+[node name="World Environment" type="WorldEnvironment" parent="." unique_id=985454673]
+environment = SubResource("Environment_knoaa")
+
+[node name="Level" type="Node3D" parent="." unique_id=625149043]
+
+[node name="Projecting Lights" type="Node3D" parent="Level" unique_id=684144272]
+
+[node name="PurpleLight" type="SpotLight3D" parent="Level/Projecting Lights" unique_id=504109765]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.665, -0.35, 0.4)
+light_color = Color(1, 0, 1, 1)
+light_energy = 0.5
+shadow_enabled = true
+shadow_normal_bias = 0.0
+shadow_blur = 1.6
+spot_range = 9.880213
+spot_angle = 25.146479
+script = ExtResource("1_4p75b")
+color = 5
+
+[node name="RedLight" type="SpotLight3D" parent="Level/Projecting Lights" unique_id=465919307]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3, -0.35, 0.4)
+light_color = Color(1, 0, 0, 1)
+light_energy = 0.5
+shadow_enabled = true
+shadow_normal_bias = 0.0
+shadow_blur = 1.6
+spot_range = 9.880213
+spot_angle = 23.738068
+script = ExtResource("1_4p75b")
+color = 0
+
+[node name="Projecting Objects" type="Node3D" parent="Level" unique_id=142777809]
+
+[node name="LinearSliderPurple" parent="Level/Projecting Objects" unique_id=2051815982 instance=ExtResource("5_s6ikc")]
+transform = Transform3D(0.05, 0, 0, 0, 0.049999997, 0, 0, 0, 0.05, 0.18464172, 0, 0.2517347)
+max_speed = 1.0
+color = 5
+
+[node name="UpDownR" type="Node3D" parent="Level/Projecting Objects/LinearSliderPurple" unique_id=2050744041]
+transform = Transform3D(1.0698276, -0.15898971, -19.970732, 10.954598, 16.726954, 0.4536695, 16.698868, -10.962833, 0.981831, 1.0362213, -5.7246094, 1.8709908)
+
+[node name="Projecting Mesh" type="MeshInstance3D" parent="Level/Projecting Objects/LinearSliderPurple/UpDownR" unique_id=1702712484]
+material_override = SubResource("ShaderMaterial_2so7o")
+mesh = SubResource("BoxMesh_gi7kc")
+script = ExtResource("4_o5wbv")
+
+[node name="UpDownL" type="Node3D" parent="Level/Projecting Objects/LinearSliderPurple" unique_id=1450053463]
+transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, 0, 0.016, 0.01)
+
+[node name="Projecting Mesh" type="MeshInstance3D" parent="Level/Projecting Objects/LinearSliderPurple/UpDownL" unique_id=442708048]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5349885, -0.3990122, 0.06892288)
+material_override = SubResource("ShaderMaterial_2so7o")
+mesh = SubResource("BoxMesh_gi7kc")
+script = ExtResource("4_o5wbv")
+
+[node name="Main Camera" type="Camera3D" parent="." unique_id=1852016925]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.6943495)
+
+[node name="Screen" type="MeshInstance3D" parent="." unique_id=904086603 node_paths=PackedStringArray("viewport")]
+unique_name_in_owner = true
+mesh = SubResource("QuadMesh_8rem4")
+script = ExtResource("6_036lt")
+viewport = NodePath("Emission Viewport")
+
+[node name="Emission Viewport" type="SubViewport" parent="Screen" unique_id=1034842482]
+size = Vector2i(1152, 648)
+
+[node name="Screen Contents" parent="Screen/Emission Viewport" unique_id=699518531 instance=ExtResource("7_w53h0")]

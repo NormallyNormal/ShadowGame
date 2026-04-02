@@ -61,7 +61,7 @@ scale = Vector2(0.3, 0.3)
 texture = ExtResource("3_g7lbm")
 
 [node name="BirdPlayer" parent="." unique_id=1226759058 instance=ExtResource("5_4rlu6")]
-position = Vector2(138, 108)
+position = Vector2(131, 110)
 
 [node name="Vignette" type="Sprite2D" parent="." unique_id=162752530]
 position = Vector2(382, 256)

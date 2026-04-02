@@ -31,6 +31,10 @@ func _on_input_event(_camera: Node, event: InputEvent, event_position: Vector3, 
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.pressed:
 			if not Colors.is_enabled(color):
+				dragging = false
+				drag_start_angle = 0.0
+				drag_start_rotation = _current_rotation
+				_target_rotation = _current_rotation
 				return
 			dragging = true
 			drag_start_rotation = _current_rotation

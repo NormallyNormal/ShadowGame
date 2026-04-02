@@ -29,8 +29,13 @@ shader_parameter/uv2_offset = Vector3(0, 0, 0)
 top_radius = 0.25
 bottom_radius = 0.25
 
+[sub_resource type="SphereMesh" id="SphereMesh_wlc1d"]
+radius = 0.3
+height = 0.6
+
 [node name="LinearSlider" type="StaticBody3D" unique_id=66519086]
 script = ExtResource("1_g11gv")
+vertical_range = 5.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=302259208]
 shape = SubResource("CylinderShape3D_qidv5")
@@ -39,6 +44,18 @@ shape = SubResource("CylinderShape3D_qidv5")
 material_override = SubResource("ShaderMaterial_k88wa")
 cast_shadow = 0
 mesh = SubResource("CylinderMesh_g11gv")
+
+[node name="UpCap" type="MeshInstance3D" parent="." unique_id=179070327]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.5, 0)
+material_override = SubResource("ShaderMaterial_k88wa")
+cast_shadow = 0
+mesh = SubResource("SphereMesh_wlc1d")
+
+[node name="DownCap" type="MeshInstance3D" parent="." unique_id=957798408]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.5, 0)
+material_override = SubResource("ShaderMaterial_k88wa")
+cast_shadow = 0
+mesh = SubResource("SphereMesh_wlc1d")
 
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

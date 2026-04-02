@@ -24,6 +24,8 @@ func _physics_process(delta: float) -> void:
 	var shape_index = 0
 	var color_index = 0
 	for projecting_light in projecting_lights:
+		if not projecting_light.is_visible_in_tree():
+			continue
 		if projecting_light.color != Colors.ColorID.WHITE:
 			var projection = project_light(projecting_light)
 			screen_colors.set_shape(color_index, projection, projecting_light.color)
